@@ -22,7 +22,7 @@ phases:
     commands:
       - echo Build completed 
       - echo Pre-Build started 
-      - aws s3 cp ./dist s3://${BUCKET_NAME}/${path} --recursive --acl public-read
+#      - aws s3 cp ./dist s3://${BUCKET_NAME}/${path} --recursive --acl public-read
       - echo Pre-Build completed on
 # Include only the files required for your application to run.
 # Do not use recursively include artifacts from node_modules directory as it will include unnecessary packages 
@@ -31,3 +31,4 @@ phases:
 artifacts:
   files:
     - dist/**
+  name: ${VERSION}
