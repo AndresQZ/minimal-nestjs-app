@@ -10,8 +10,9 @@ phases:
       - npm install
   pre_build:
     commands:
-      - echo 'BUCKET_NAME'......
-      - echo ${BUCKET_NAME}
+      - echo 'BUCKET_NAME', 'env'.....
+      - echo ${BUCKET_NAME} 
+      - echo ${env}
       - echo Installing source NPM dependencies...
       - npm install
   build:
