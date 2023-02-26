@@ -18,12 +18,14 @@ phases:
       - node -v
       - echo running build... 
       - npm run build
+      - echo ls -all ....
+      - ls -all
   post_build:
     commands:
       - echo Build completed 
       - echo Pre-Build started 
-      - aws s3 cp ./dist/APPLICATION_NAME s3://${BUCKET_NAME} --recursive --acl public-read
-      - echo Pre-Build completed on 
+      - aws s3 cp ./dist/** s3://${BUCKET_NAME} --recursive --acl public-read
+      - echo Pre-Build completed on
 # Include only the files required for your application to run.
 # Do not use recursively include artifacts from node_modules directory as it will include unnecessary packages 
 # used only for building and testing.
