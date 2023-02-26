@@ -14,7 +14,9 @@ phases:
       - npm install
   build:
     commands:
-      - echo running build...
+      - echo node version ..... 
+      - node -v
+      - echo running build... 
       - npm run build
   post_build:
     commands:
