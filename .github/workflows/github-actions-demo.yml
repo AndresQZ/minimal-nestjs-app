@@ -18,23 +18,18 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-  build:
-    if: github.repository == 'AndresQZ/minimal-nestjs-app'
-    runs-on: ubuntu-latest
-    steps:
+
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '15.x'
+          node-version: '16.x'
       - name: Install dependencies
         run: npm install
       - name: Building app
         run: npm run build
       - name: listing files in current directory
         run: ls -all
-  upload:
-    runs-on: ubuntu-latest
-    steps:
+
       - uses: shallwefootball/s3-upload-action@master
         name: Upload S3
         id: S3
@@ -44,4 +39,33 @@ jobs:
           aws_bucket: ${{ secrets.AWS_BUCKET }}
           source_dir: 'build'
           destination_dir: 'version/action'
+
+
+
+  # build:
+  #   if: github.repository == 'AndresQZ/minimal-nestjs-app'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '15.x'
+  #     - name: Install dependencies
+  #       run: npm install
+  #     - name: Building app
+  #       run: npm run build
+  #     - name: listing files in current directory
+  #       run: ls -all
+  # upload:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: shallwefootball/s3-upload-action@master
+  #       name: Upload S3
+  #       id: S3
+  #       with:
+  #         aws_key_id: ${{ secrets.AWS_KEY_ID }}
+  #         aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+  #         aws_bucket: ${{ secrets.AWS_BUCKET }}
+  #         source_dir: 'build'
+  #         destination_dir: 'version/action'
   
