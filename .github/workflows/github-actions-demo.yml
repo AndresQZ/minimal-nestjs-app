@@ -6,6 +6,9 @@ on:
 jobs:
   POC-github:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -30,15 +33,26 @@ jobs:
       - name: listing files in current directory
         run: ls -all
 
-      - uses: shallwefootball/s3-upload-action@master
-        name: Upload S3
-        id: S3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws_key_id: ${{ secrets.AWS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-          aws_bucket: ${{ secrets.AWS_BUCKET }}
-          source_dir: 'dist'
-          destination_dir: 'sdk/v1.0.0'
+          role-to-assume: ${{ secrets.ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Copy files to the test website with the AWS CLI
+        run: |
+          aws s3 sync ./dist s3://${{ secrets.AWS_BUCKET }}
+
+      # - uses: shallwefootball/s3-upload-action@master
+      #   name: Upload S3
+      #   id: S3
+      #   with:
+      #     aws_key_id: ${{ secrets.AWS_KEY_ID }}
+      #     aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+      #     aws_bucket: ${{ secrets.AWS_BUCKET }}
+      #     source_dir: 'dist'
+      #     destination_dir: 'sdk/v1.0.0'
 
 
 
